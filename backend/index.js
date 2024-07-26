@@ -7,3 +7,5 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 app.use("/api/v1", mainRouter);
+
+app.listen(3000);
