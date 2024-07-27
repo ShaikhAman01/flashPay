@@ -1,5 +1,6 @@
 // backend/routes/account.js
 const express = require("express");
+const zod = require("zod");
 const { authMiddleware } = require("../middleware");
 const { Account } = require("../db");
 const { default: mongoose } = require("mongoose");
@@ -16,11 +17,23 @@ router.get("/balance", authMiddleware, async (req, res) => {
   });
 });
 
-router.post("/transfer", authMiddleware, async (req, res) => {
-  const session = await mongoose.startSession();
 
+const transferBody = zod.object({
+  amount: zod.number().positive().min(1).max(10000)
+}) 
+
+router.post("/transfer", authMiddleware, async (req, res) => {
+  const { success } = transferBody.safeParse(req.body);
+  if (!success) {
+    return res.status(411).json({
+      message: "Invalid Amount Transfer",
+    });
+  }
+  const session = await mongoose.startSession();
+  
   session.startTransaction();
   const { amount, to } = req.body;
+
 
   // Fetch accounts
   const account = await Account.findOne({

@@ -5,6 +5,7 @@ mongoose
   )
   .then(() => console.log("MongoDB connected..."))
   .catch((err) => console.log(err));
+
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -16,6 +17,7 @@ const userSchema = new Schema({
     lowercase: true,
     minLength: 3,
     maxLength: 30,
+    verified:Boolean
   },
   password: {
     type: String,
@@ -48,10 +50,19 @@ const accountSchema = new Schema({
   },
 });
 
+const userOTPVerificationSchema= new Schema({
+  userId: String,
+  otp: String,
+  createdAt: Date,
+  expiresAt: Date
+})
+
 const Account = mongoose.model("Account", accountSchema);
 const User = mongoose.model("User", userSchema);
+const UserOTPVerification = mongoose.model("UserOTPVerification",userOTPVerificationSchema)
 
 module.exports = {
   User,
   Account,
+  UserOTPVerification
 };
