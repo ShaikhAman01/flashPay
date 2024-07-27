@@ -1,4 +1,5 @@
 const express = require("express");
+const router = express.Router();
 const zod = require("zod");
 const { authMiddleware } = require("../middleware");
 const { User, Account } = require("../db");
@@ -6,13 +7,11 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 
 const signupBody = zod.object({
-  username: zod.string().email,
+  username: zod.string().email(),
   firstName: zod.string(),
   lastName: zod.string(),
   password: zod.string(),
 });
-
-const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   const { success } = signupBody.safeParse(req.body);
@@ -59,7 +58,7 @@ router.post("/signup", async (req, res) => {
 });
 
 const signinBody = zod.object({
-  username: zod.string().email,
+  username: zod.string().email(),
   password: zod.string(),
 });
 
@@ -100,10 +99,10 @@ const updateBody = zod.object({
   lastName: zod.string().optional(),
 });
 
-router.put("/", async (req, res) => {
+router.put("/", authMiddleware, async (req, res) => {
   const { success } = updateBody.safeParse(req.body);
   if (!success) {
-    res.status(411).json({
+    return res.status(411).json({
       message: "Error while updating information",
     });
   }
