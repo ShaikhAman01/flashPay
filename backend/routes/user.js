@@ -30,7 +30,7 @@ router.post("/signup", async (req, res) => {
 
   if (existingUser) {
     return res.status(411).json({
-      message: "Email already taken/Incoorect inputs",
+      message: "Email already taken/Incorect inputs",
     });
   }
 
@@ -60,7 +60,7 @@ router.post("/signup", async (req, res) => {
       },
       JWT_SECRET
     );
-
+   console.log("BEfore OTP")
     const otpResult = await sendOTPVerificationEmail(user, res);
 
     if (!otpResult.success) {
@@ -121,6 +121,7 @@ const sendOTPVerificationEmail = async (user) => {
       createdAt: Date.now(),
       expiresAt: Date.now() + 3600000,
     });
+
 
     //save otp record
     await newOTPVerification.save();
@@ -221,6 +222,8 @@ router.post("/verifyOTP", async (req, res) => {
             status: "VERIFIED",
             message: "User Email verified successfully",
           });
+
+          console.log("UserId:" + userId + "OTP:" + otp + "ExpiresAt:" + expiresAt + "HAshedOTP: " +hashedOTP)
         
       
     

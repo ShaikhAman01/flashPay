@@ -1,9 +1,9 @@
-import React from 'react'
+import { TransferMoney } from "../components/TransferMoney";
 
 export default function SendMoney() {
   return (
-    <div>
-      Sebd money
+    <div className='bg-slate-50'>
+    <TransferMoney/>
     </div>
   )
 }
