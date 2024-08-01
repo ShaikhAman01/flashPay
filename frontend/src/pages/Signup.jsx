@@ -4,7 +4,6 @@ import { InputBox } from "../components/InputBox";
 import { Button } from "../components/Button";
 import { ButtonWarning } from "../components/ButtonWarning";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import OTPVerification from "../components/OTPVerification";
 
@@ -13,18 +12,21 @@ export default function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
-    const [userId, setUserId] = useState(null); 
+  const [userId, setUserId] = useState(null);
   const [message, setMessage] = useState("");
-
 
   const handleSignup = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-        firstName,
-        lastName,
-        username,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/user/signup",
+        {
+          firstName,
+          lastName,
+          username,
+          password,
+        }
+      );
+      localStorage.setItem("token", response.data.token);
 
       if (response.data.message === "User created successfully, OTP sent") {
         setUserId(response.data.userId);
@@ -73,10 +75,7 @@ export default function Signup() {
             placeholder={""}
           />
           <div className="pt-4">
-            <Button
-              onClick={handleSignup}
-              text={"Sign up"}
-            />
+            <Button onClick={handleSignup} text={"Sign up"} />
           </div>
           <ButtonWarning
             label={"Already have an account?"}
@@ -86,8 +85,6 @@ export default function Signup() {
 
           {userId && <OTPVerification userId={userId} />}
           <p>{message}</p>
-
-          
         </div>
       </div>
     </div>
