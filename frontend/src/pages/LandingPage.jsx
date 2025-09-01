@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import { Zap, Wallet, Users, ArrowDownLeft, Shield } from 'lucide-react';
 
 const Button = ({ children, primary }) => (
@@ -7,6 +7,11 @@ const Button = ({ children, primary }) => (
   </button>
 );
 
+Button.propTypes = {
+  children: PropTypes.node.isRequired,
+  primary: PropTypes.bool
+};
+
 const Feature = ({ icon: Icon, title, description }) => (
   <div className="flex flex-col items-center p-4 text-center">
     <Icon className="w-8 h-8 mb-2 text-blue-500" />
@@ -14,6 +19,12 @@ const Feature = ({ icon: Icon, title, description }) => (
     <p className="text-sm text-gray-600">{description}</p>
   </div>
 );
+
+Feature.propTypes = {
+  icon: PropTypes.elementType.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired
+};
 
 export default function LandingPage() {
   return (
