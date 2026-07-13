@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
+const { MONGO_URI } = require("./config");
 mongoose
-  .connect(
-    "mongodb+srv://new-user_01:edCrlSiVD9I8u840@cluster0.pxs0hlx.mongodb.net/paytm"
-  )
+  .connect(MONGO_URI)
   .then(() => console.log("MongoDB connected..."))
   .catch((err) => console.log(err));
 
